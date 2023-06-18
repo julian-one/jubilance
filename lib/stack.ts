@@ -1,0 +1,55 @@
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as path from 'path';
+
+class JubilanceStack extends cdk.Stack {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+        super(scope, id, props);
+
+        const table = new dynamodb.Table(this, 'table', {
+            tableName: 'recipes',
+            billingMode: dynamodb.BillingMode.PROVISIONED,
+            removalPolicy: cdk.RemovalPolicy.DESTROY,
+            partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+        });
+
+        const handler = new NodejsFunction(this, 'handler', {
+            memorySize: 1024,
+            timeout: cdk.Duration.seconds(5),
+            runtime: lambda.Runtime.NODEJS_18_X,
+            handler: 'main',
+            environment: {
+                RECIPE_TABLE: table.tableName,
+            },
+            entry: path.join(__dirname, '/../src/index.ts'),
+            bundling: {
+                minify: true,
+                externalModules: ['aws-sdk'],
+            },
+        });
+        table.grantReadWriteData(handler);
+
+        const api = new apigateway.RestApi(this, 'api', {
+            restApiName: 'Api',
+            disableExecuteApiEndpoint: true,
+        });
+        const recipes = api.root.addResource('recipes');
+        const recipesId = recipes.addResource('{id}');
+
+        const integration = new apigateway.LambdaIntegration(handler, {
+            proxy: true,
+        });
+
+        recipes.addMethod('POST', integration);
+        recipes.addMethod('GET', integration);
+        recipesId.addMethod('GET', integration);
+        recipesId.addMethod('PUT', integration);
+        recipesId.addMethod('DELETE', integration);
+    }
+}
+
+export default JubilanceStack;

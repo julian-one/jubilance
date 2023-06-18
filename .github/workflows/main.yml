@@ -1,22 +1,37 @@
-name: Node.js CI
+name: One CI To Rule Them All
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+env:
+    AWS_REGION: 'us-west-2'
+
+permissions:
+    id-token: write
+    contents: read
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
+    everything:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+            - name: build & test
+              run: |
+                  npm ci
+                  npm run build
+                  npm test
+            - name: configure credentials
+              id: cdk
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                  role-to-assume: arn:aws:iam::136998787353:role/GitHubAction-AssumeRoleWithAction
+                  role-session-name: GitHub_to_AWS_via_FederatedOIDC
+                  aws-region: ${{ env.AWS_REGION }}
+            - name: deploy
+              run: |
+                  aws sts get-caller-identity 
+                #   npx cdk deploy --require-approval never
