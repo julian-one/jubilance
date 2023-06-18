@@ -1,7 +1,7 @@
 {
   "name": "jubilance",
   "repository": "https://github.com/julian-one/jubilance.git",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "bin": {
     "jubilance": "bin/jubilance.js"
   },
