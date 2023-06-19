@@ -16,7 +16,7 @@ permissions:
     contents: read
 
 jobs:
-    everything:
+    deploy:
         runs-on: ubuntu-latest
         steps:
             - name: configure credentials
@@ -28,4 +28,4 @@ jobs:
             - name: deploy
               run: |
                   aws sts get-caller-identity
-              #   npx cdk deploy --require-approval never
+                  npx cdk deploy --require-approval never

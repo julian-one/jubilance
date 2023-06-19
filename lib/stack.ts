@@ -25,7 +25,7 @@ class JubilanceStack extends cdk.Stack {
             timeout: cdk.Duration.seconds(5),
             runtime: lambda.Runtime.NODEJS_18_X,
             handler: 'main',
-            functionName: 'jubilance',
+            functionName: 'jubilanceHandler',
             environment: {
                 RECIPE_TABLE: table.tableName,
             },
@@ -63,15 +63,11 @@ class JubilanceStack extends cdk.Stack {
         const recipes = api.root.addResource('recipes');
         const recipesId = recipes.addResource('{id}');
 
-        const integration = new apigateway.LambdaIntegration(handler, {
-            proxy: true,
-        });
-
-        recipes.addMethod('POST', integration);
-        recipes.addMethod('GET', integration);
-        recipesId.addMethod('GET', integration);
-        recipesId.addMethod('PUT', integration);
-        recipesId.addMethod('DELETE', integration);
+        recipes.addMethod('POST');
+        recipes.addMethod('GET');
+        recipesId.addMethod('GET');
+        recipesId.addMethod('PUT');
+        recipesId.addMethod('DELETE');
     }
 }
 
