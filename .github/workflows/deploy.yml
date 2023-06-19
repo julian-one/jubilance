@@ -4,10 +4,10 @@ on:
     workflow_run:
         workflows: [main]
         types:
-          - completed
+            - completed
     push:
         branches: [main]
-        
+
 env:
     AWS_REGION: 'us-west-2'
 
