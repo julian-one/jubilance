@@ -13,7 +13,7 @@ export const createRecipe = async (request: RecipeRequest): Promise<Recipe> => {
     return recipe;
 };
 
-export const getAllRecipes = async (): Promise<any[]> => {
+export const getAllRecipes = async (): Promise<Recipe[]> => {
     const recipes = await dynamo.getAllRecipes();
     return recipes ?? [];
 };

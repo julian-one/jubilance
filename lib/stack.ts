@@ -22,6 +22,7 @@ class JubilanceStack extends cdk.Stack {
             timeout: cdk.Duration.seconds(5),
             runtime: lambda.Runtime.NODEJS_18_X,
             handler: 'main',
+            functionName: 'jubilance',
             environment: {
                 RECIPE_TABLE: table.tableName,
             },
@@ -34,9 +35,28 @@ class JubilanceStack extends cdk.Stack {
         table.grantReadWriteData(handler);
 
         const api = new apigateway.RestApi(this, 'api', {
-            restApiName: 'Api',
-            disableExecuteApiEndpoint: true,
+            restApiName: 'Recipe Api',
+            deployOptions: {
+                stageName: 'prod',
+            },
         });
+
+        const domainName = apigateway.DomainName.fromDomainNameAttributes(
+            this,
+            'domainName',
+            {
+                domainName: process.env.DOMAIN_NAME,
+                domainNameAliasHostedZoneId:
+                    process.env.DOMAIN_NAME_ALIAS_HOSTED_ZONE_ID,
+                domainNameAliasTarget: process.env.DOMAIN_NAME_ALIAS_TARGET,
+            },
+        );
+
+        new apigateway.BasePathMapping(this, 'basePathMapping', {
+            domainName: domainName,
+            restApi: api,
+        });
+
         const recipes = api.root.addResource('recipes');
         const recipesId = recipes.addResource('{id}');
 

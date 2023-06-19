@@ -11,3 +11,5 @@ cdk.out
 dist
 coverage
 scratch.*
+.env
+!src/environment.d.ts
