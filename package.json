@@ -27,6 +27,7 @@
         "aws-cdk": "^2.81.0",
         "aws-sdk-client-mock": "^2.1.1",
         "aws-sdk-client-mock-jest": "^2.1.1",
+        "dotenv": "^16.3.1",
         "esbuild": "^0.18.4",
         "eslint": "^8.43.0",
         "eslint-config-prettier": "^8.8.0",

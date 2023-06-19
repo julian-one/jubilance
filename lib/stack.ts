@@ -6,6 +6,9 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as path from 'path';
 
+import { config } from 'dotenv';
+config();
+
 class JubilanceStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
@@ -37,7 +40,7 @@ class JubilanceStack extends cdk.Stack {
         const api = new apigateway.RestApi(this, 'api', {
             restApiName: 'Recipe Api',
             deployOptions: {
-                stageName: 'prod',
+                stageName: process.env.DEPLOYMENT_ENV,
             },
         });
 
