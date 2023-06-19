@@ -1,9 +1,12 @@
 name: Release
 
 on:
+    workflow_run:
+        workflows: [main]
+        types:
+          - completed
     push:
-        branches:
-            - main
+        branches: [main]
 
 jobs:
     release:
