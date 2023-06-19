@@ -7,7 +7,7 @@ export async function main(
     const handler = new Handler();
 
     const method = event.httpMethod;
-    const resource = event.requestContext.path;
+    const resource = event.requestContext.resourcePath;
     console.log('event received:', method, resource, event);
 
     if (method === 'POST' && resource === '/recipes')

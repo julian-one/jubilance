@@ -48,10 +48,10 @@ class JubilanceStack extends cdk.Stack {
             this,
             'domainName',
             {
-                domainName: process.env.DOMAIN_NAME,
+                domainName: process.env.DOMAIN_NAME!,
                 domainNameAliasHostedZoneId:
-                    process.env.DOMAIN_NAME_ALIAS_HOSTED_ZONE_ID,
-                domainNameAliasTarget: process.env.DOMAIN_NAME_ALIAS_TARGET,
+                    process.env.DOMAIN_NAME_ALIAS_HOSTED_ZONE_ID!,
+                domainNameAliasTarget: process.env.DOMAIN_NAME_ALIAS_TARGET!,
             },
         );
 
@@ -63,11 +63,15 @@ class JubilanceStack extends cdk.Stack {
         const recipes = api.root.addResource('recipes');
         const recipesId = recipes.addResource('{id}');
 
-        recipes.addMethod('POST');
-        recipes.addMethod('GET');
-        recipesId.addMethod('GET');
-        recipesId.addMethod('PUT');
-        recipesId.addMethod('DELETE');
+        const integration = new apigateway.LambdaIntegration(handler, {
+            proxy: true,
+        });
+
+        recipes.addMethod('POST', integration);
+        recipes.addMethod('GET', integration);
+        recipesId.addMethod('GET', integration);
+        recipesId.addMethod('PUT', integration);
+        recipesId.addMethod('DELETE', integration);
     }
 }
 
