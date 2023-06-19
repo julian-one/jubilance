@@ -23,6 +23,7 @@ jobs:
               run: |
                   npm ci
                   npm run build
+                  echo "${{ secrets.ENV_FILE }}" > .env
                   npm test
             - name: configure credentials
               id: cdk
