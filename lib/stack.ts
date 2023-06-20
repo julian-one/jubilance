@@ -3,6 +3,7 @@ import { Construct } from 'constructs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as path from 'path';
 
@@ -12,6 +13,16 @@ config();
 class JubilanceStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
+
+        const userPool = new cognito.UserPool(this, 'userPool');
+
+        const auth = new apigateway.CognitoUserPoolsAuthorizer(
+            this,
+            'authorizer',
+            {
+                cognitoUserPools: [userPool],
+            },
+        );
 
         const table = new dynamodb.Table(this, 'table', {
             tableName: 'recipes',
@@ -66,12 +77,16 @@ class JubilanceStack extends cdk.Stack {
         const integration = new apigateway.LambdaIntegration(handler, {
             proxy: true,
         });
+        const options: cdk.aws_apigateway.MethodOptions = {
+            authorizer: auth,
+            authorizationType: apigateway.AuthorizationType.COGNITO,
+        };
 
-        recipes.addMethod('POST', integration);
-        recipes.addMethod('GET', integration);
-        recipesId.addMethod('GET', integration);
-        recipesId.addMethod('PUT', integration);
-        recipesId.addMethod('DELETE', integration);
+        recipes.addMethod('POST', integration, options);
+        recipes.addMethod('GET', integration, options);
+        recipesId.addMethod('GET', integration, options);
+        recipesId.addMethod('PUT', integration, options);
+        recipesId.addMethod('DELETE', integration, options);
     }
 }
 
