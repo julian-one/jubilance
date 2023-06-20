@@ -14,12 +14,17 @@ class JubilanceStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
-        const userPool = new cognito.UserPool(this, 'userPool');
+        const userPool = new cognito.UserPool(this, 'userPool', {
+            signInAliases: { username: true, email: true },
+            selfSignUpEnabled: true,
+            removalPolicy: cdk.RemovalPolicy.DESTROY,
+        });
 
-        const auth = new apigateway.CognitoUserPoolsAuthorizer(
+        const authorizer = new apigateway.CognitoUserPoolsAuthorizer(
             this,
             'authorizer',
             {
+                identitySource: 'method.request.header.Authorization',
                 cognitoUserPools: [userPool],
             },
         );
@@ -53,6 +58,10 @@ class JubilanceStack extends cdk.Stack {
             deployOptions: {
                 stageName: process.env.DEPLOYMENT_ENV,
             },
+            defaultMethodOptions: {
+                authorizationType: apigateway.AuthorizationType.COGNITO,
+                authorizer,
+            },
         });
 
         const domainName = apigateway.DomainName.fromDomainNameAttributes(
@@ -77,16 +86,12 @@ class JubilanceStack extends cdk.Stack {
         const integration = new apigateway.LambdaIntegration(handler, {
             proxy: true,
         });
-        const options: cdk.aws_apigateway.MethodOptions = {
-            authorizer: auth,
-            authorizationType: apigateway.AuthorizationType.COGNITO,
-        };
 
-        recipes.addMethod('POST', integration, options);
-        recipes.addMethod('GET', integration, options);
-        recipesId.addMethod('GET', integration, options);
-        recipesId.addMethod('PUT', integration, options);
-        recipesId.addMethod('DELETE', integration, options);
+        recipes.addMethod('POST', integration);
+        recipes.addMethod('GET', integration);
+        recipesId.addMethod('GET', integration);
+        recipesId.addMethod('PUT', integration);
+        recipesId.addMethod('DELETE', integration);
     }
 }
 
