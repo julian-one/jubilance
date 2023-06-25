@@ -6,6 +6,7 @@
         "jubilance": "bin/jubilance.js"
     },
     "scripts": {
+        "all": "npm run build && npm run test",
         "build": "tsc",
         "watch": "tsc -w",
         "test": "jest --coverage",
@@ -25,8 +26,10 @@
         "@types/uuid": "^9.0.1",
         "@typescript-eslint/eslint-plugin": "^5.59.8",
         "aws-cdk": "^2.81.0",
+        "aws-cdk-lib": "^2.81.0",
         "aws-sdk-client-mock": "^2.1.1",
         "aws-sdk-client-mock-jest": "^2.1.1",
+        "constructs": "^10.2.38",
         "dotenv": "^16.3.1",
         "esbuild": "^0.18.4",
         "eslint": "^8.43.0",
@@ -37,6 +40,7 @@
         "lint-staged": "^13.2.2",
         "prettier": "^2.8.8",
         "semantic-release": "^21.0.5",
+        "source-map-support": "^0.5.21",
         "ts-jest": "^29.0.5",
         "ts-node": "^10.9.1",
         "typescript": "^5.1.3"
@@ -44,9 +48,6 @@
     "dependencies": {
         "@aws-sdk/client-dynamodb": "^3.345.0",
         "@aws-sdk/lib-dynamodb": "^3.345.0",
-        "aws-cdk-lib": "^2.81.0",
-        "aws-lambda": "^1.0.7",
-        "constructs": "^10.2.38",
-        "source-map-support": "^0.5.21"
+        "aws-lambda": "^1.0.7"
     }
 }

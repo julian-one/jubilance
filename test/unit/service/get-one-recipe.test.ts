@@ -10,9 +10,9 @@ describe('getOneRecipe', () => {
         ddbMock.reset();
     });
 
-    test.skip('returns a recipe', async () => {
-        const recipeRecord = random.recipe();
-        const expected = recipeRecord;
+    test('returns a recipe', async () => {
+        const expected = random.recipe();
+        const recipeRecord = { recipe: expected };
         ddbMock.on(GetCommand).resolvesOnce({
             Item: recipeRecord,
         });

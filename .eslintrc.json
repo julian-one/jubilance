@@ -16,7 +16,7 @@
         "sourceType": "module"
     },
     "plugins": ["prettier"],
-    "ignorePatterns": ["cdk.out", "dist"],
+    "ignorePatterns": ["cdk.out", "build"],
     "rules": {
         "no-new": "off",
         "no-unused-vars": "error",

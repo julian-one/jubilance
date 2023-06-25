@@ -19,7 +19,10 @@ export const getAllRecipes = async (): Promise<Recipe[]> => {
 };
 
 export const getOneRecipe = async (recipeId: string): Promise<Recipe> => {
+    console.log('AAA getOneRecipe');
     const recipe = await dynamo.getRecipe(recipeId);
+    console.log('BBB getOneRecipe', recipe);
+
     return recipe ?? ({} as Recipe);
 };
 

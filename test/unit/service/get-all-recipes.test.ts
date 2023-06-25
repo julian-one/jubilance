@@ -9,9 +9,9 @@ describe('getAllRecipes', () => {
         ddbMock.reset();
     });
 
-    test.skip('returns an array of recipes', async () => {
-        const recipeRecord = random.recipe();
-        const expected = [recipeRecord];
+    test('returns an array of recipes', async () => {
+        const recipeRecord = { recipe: random.recipe() };
+        const expected = [recipeRecord.recipe];
         ddbMock.on(ScanCommand).resolvesOnce({
             Items: [recipeRecord],
             Count: 1,
