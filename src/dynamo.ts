@@ -49,9 +49,7 @@ class Dynamo {
             TableName: this.tableName,
             Key: { id: recipeId },
         });
-        console.log('dynamo | getRecipe');
         const { Item } = await this.documentClient.send(command);
-        console.log('dynamo | getRecipe', Item);
         if (!Item) return undefined;
         return Item.recipe;
     }

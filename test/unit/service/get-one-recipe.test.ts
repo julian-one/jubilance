@@ -21,4 +21,14 @@ describe('getOneRecipe', () => {
 
         expect(result).toEqual(expected);
     });
+
+    test('returns an empty object', async () => {
+        ddbMock.on(GetCommand).resolvesOnce({
+            Item: undefined,
+        });
+
+        const result = await getOneRecipe(recipeId);
+
+        expect(result).toEqual({});
+    });
 });

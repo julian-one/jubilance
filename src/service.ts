@@ -1,12 +1,12 @@
 import { Recipe, RecipeRequest } from './types';
 import Dynamo from './dynamo';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 
 const dynamo = new Dynamo();
 
 export const createRecipe = async (request: RecipeRequest): Promise<Recipe> => {
     const recipe = {
-        id: uuidv4(),
+        id: randomUUID(),
         ...request,
     };
     await dynamo.putRecipe(recipe);
@@ -19,10 +19,7 @@ export const getAllRecipes = async (): Promise<Recipe[]> => {
 };
 
 export const getOneRecipe = async (recipeId: string): Promise<Recipe> => {
-    console.log('AAA getOneRecipe');
     const recipe = await dynamo.getRecipe(recipeId);
-    console.log('BBB getOneRecipe', recipe);
-
     return recipe ?? ({} as Recipe);
 };
 

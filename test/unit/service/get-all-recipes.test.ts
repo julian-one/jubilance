@@ -21,4 +21,15 @@ describe('getAllRecipes', () => {
 
         expect(result).toEqual(expected);
     });
+
+    test('returns an empty array', async () => {
+        ddbMock.on(ScanCommand).resolvesOnce({
+            Items: undefined,
+            Count: 0,
+        });
+
+        const result = await getAllRecipes();
+
+        expect(result).toEqual([]);
+    });
 });

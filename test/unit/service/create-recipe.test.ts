@@ -5,7 +5,7 @@ import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
 import * as random from '../../mock/data';
 
 const recipeId = random.uuid();
-jest.mock('uuid', () => ({ v4: () => recipeId }));
+jest.mock('crypto', () => ({ randomUUID: () => recipeId }));
 
 describe('createRecipe', () => {
     const ddbMock = mockClient(DynamoDBDocumentClient);
