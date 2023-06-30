@@ -21,12 +21,4 @@ const recipe = (id?: string): Recipe => {
     };
 };
 
-const recipeRecord = () => {
-    const recipeId = uuid();
-    return {
-        pk: { S: recipeId },
-        recipe: recipe(recipeId),
-    };
-};
-
-export { string, number, uuid, recipe, recipeRecord };
+export { string, number, uuid, recipe };

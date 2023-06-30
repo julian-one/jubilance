@@ -10,7 +10,7 @@ describe('getAllRecipes', () => {
     });
 
     test('returns an array of recipes', async () => {
-        const recipeRecord = random.recipeRecord();
+        const recipeRecord = { recipe: random.recipe() };
         const expected = [recipeRecord.recipe];
         ddbMock.on(ScanCommand).resolvesOnce({
             Items: [recipeRecord],
@@ -20,5 +20,16 @@ describe('getAllRecipes', () => {
         const result = await getAllRecipes();
 
         expect(result).toEqual(expected);
+    });
+
+    test('returns an empty array', async () => {
+        ddbMock.on(ScanCommand).resolvesOnce({
+            Items: undefined,
+            Count: 0,
+        });
+
+        const result = await getAllRecipes();
+
+        expect(result).toEqual([]);
     });
 });

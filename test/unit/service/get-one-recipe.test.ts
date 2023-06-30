@@ -11,8 +11,8 @@ describe('getOneRecipe', () => {
     });
 
     test('returns a recipe', async () => {
-        const recipeRecord = random.recipeRecord();
-        const expected = recipeRecord.recipe;
+        const expected = random.recipe();
+        const recipeRecord = { recipe: expected };
         ddbMock.on(GetCommand).resolvesOnce({
             Item: recipeRecord,
         });
@@ -20,5 +20,15 @@ describe('getOneRecipe', () => {
         const result = await getOneRecipe(recipeId);
 
         expect(result).toEqual(expected);
+    });
+
+    test('returns an empty object', async () => {
+        ddbMock.on(GetCommand).resolvesOnce({
+            Item: undefined,
+        });
+
+        const result = await getOneRecipe(recipeId);
+
+        expect(result).toEqual({});
     });
 });

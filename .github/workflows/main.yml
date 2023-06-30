@@ -1,17 +1,10 @@
-name: One CI To Rule Them All
+name: Build & Test
 
 on:
     push:
         branches: [main]
     pull_request:
         branches: [main]
-
-env:
-    AWS_REGION: 'us-west-2'
-
-permissions:
-    id-token: write
-    contents: read
 
 jobs:
     everything:
@@ -23,15 +16,5 @@ jobs:
               run: |
                   npm ci
                   npm run build
+                  echo "${{ secrets.ENV_FILE }}" > .env
                   npm test
-            - name: configure credentials
-              id: cdk
-              uses: aws-actions/configure-aws-credentials@v2
-              with:
-                  role-to-assume: arn:aws:iam::136998787353:role/GitHubAction-AssumeRoleWithAction
-                  role-session-name: GitHub_to_AWS_via_FederatedOIDC
-                  aws-region: ${{ env.AWS_REGION }}
-            - name: deploy
-              run: |
-                  aws sts get-caller-identity 
-                #   npx cdk deploy --require-approval never

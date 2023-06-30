@@ -1,0 +1,31 @@
+name: Deploy
+
+on:
+    workflow_run:
+        workflows: [main]
+        types:
+            - completed
+    push:
+        branches: [main]
+
+env:
+    AWS_REGION: 'us-west-2'
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: configure credentials
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                  role-to-assume: arn:aws:iam::136998787353:role/GitHubAction-AssumeRoleWithAction
+                  role-session-name: GitHub_to_AWS_via_FederatedOIDC
+                  aws-region: ${{ env.AWS_REGION }}
+            - name: deploy
+              run: |
+                  aws sts get-caller-identity
+                  npx cdk deploy --require-approval never
