@@ -27,7 +27,6 @@
             "error",
             "single",
             { "avoidEscape": true, "allowTemplateLiterals": false }
-        ],
-        "prettier/prettier": "error"
+        ]
     }
 }

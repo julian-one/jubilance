@@ -36,8 +36,14 @@ class Handler {
             return this.toResult(400, 'bad request: not a recipe');
 
         try {
-            const res = await updateRecipe(recipe);
-            return this.toResult(200, JSON.stringify(res));
+            const updatedRecipe = await updateRecipe(recipe);
+            if (!updatedRecipe)
+                return this.toResult(
+                    404,
+                    `not found: no recipe with the id=${recipe.id}`,
+                );
+
+            return this.toResult(200, JSON.stringify(updatedRecipe));
         } catch (error) {
             console.error(error);
             return this.toResult(
