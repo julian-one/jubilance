@@ -27,5 +27,6 @@ jobs:
                   aws-region: ${{ env.AWS_REGION }}
             - name: deploy
               run: |
+                  npm ci
                   aws sts get-caller-identity
                   npx cdk deploy --require-approval never

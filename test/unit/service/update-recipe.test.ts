@@ -1,7 +1,11 @@
 import { updateRecipe } from '../../../src/service';
 import { Recipe } from '../../../src/types';
 import { mockClient } from 'aws-sdk-client-mock';
-import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
+import {
+    DynamoDBDocumentClient,
+    PutCommand,
+    GetCommand,
+} from '@aws-sdk/lib-dynamodb';
 import * as random from '../../mock/data';
 
 describe('updateRecipe', () => {
@@ -17,6 +21,13 @@ describe('updateRecipe', () => {
             description: random.string(),
             steps: [],
         };
+
+        const expected = random.recipe();
+        const recipeRecord = { recipe: expected };
+        ddbMock.on(GetCommand).resolvesOnce({
+            Item: recipeRecord,
+        });
+
         ddbMock.on(PutCommand).resolves({});
 
         const result = await updateRecipe(recipe);

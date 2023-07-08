@@ -23,7 +23,12 @@ export const getOneRecipe = async (recipeId: string): Promise<Recipe> => {
     return recipe ?? ({} as Recipe);
 };
 
-export const updateRecipe = async (recipe: Recipe): Promise<Recipe> => {
+export const updateRecipe = async (
+    recipe: Recipe,
+): Promise<Recipe | undefined> => {
+    const record = await dynamo.getRecipe(recipe.id);
+    if (!record) return undefined;
+
     await dynamo.putRecipe(recipe);
     return recipe;
 };
