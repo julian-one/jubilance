@@ -17,6 +17,7 @@ jobs:
             - name: release
               run: |
                 npm ci 
+                echo "${{ secrets.ENV_FILE }}" > .env
                 npx semantic-release
               env:
                   GITHUB_TOKEN: ${{ github.token }}
