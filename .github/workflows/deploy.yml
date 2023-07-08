@@ -29,4 +29,5 @@ jobs:
               run: |
                   npm ci
                   aws sts get-caller-identity
+                  echo "${{ secrets.ENV_FILE }}" > .env
                   npx cdk deploy --require-approval never
