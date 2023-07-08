@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/julian-one/jubilance/compare/v1.1.0...v1.1.1) (2023-07-08)
+
+
+### Bug Fixes
+
+* deploy job ([#4](https://github.com/julian-one/jubilance/issues/4)) ([401a87b](https://github.com/julian-one/jubilance/commit/401a87bb0fd700d07f04b185a856e7ccf5a1d379))
+
 # [1.1.0](https://github.com/julian-one/jubilance/compare/v1.0.0...v1.1.0) (2023-07-08)
 
 
