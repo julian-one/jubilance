@@ -28,15 +28,6 @@ describe('main', () => {
         expect(spy).toHaveBeenCalled();
     });
 
-    test('GET /recipes/{id}', async () => {
-        const spy = jest.spyOn(Handler.prototype, 'getRecipeById');
-
-        const event = proxyEvent('GET', '/recipes/{id}');
-        await main(event);
-
-        expect(spy).toHaveBeenCalled();
-    });
-
     test('PUT /recipes', async () => {
         const spy = jest.spyOn(Handler.prototype, 'putRecipe');
 

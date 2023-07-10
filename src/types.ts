@@ -19,7 +19,7 @@ type RecipeRequest = {
 type Recipe = RecipeRequest & {
     id: string;
     createdAt: string;
-    updatedAt: string | undefined;
+    updatedAt?: string;
 };
 
 function isRecipe(obj: Recipe): obj is Recipe {

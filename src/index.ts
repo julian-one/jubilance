@@ -13,14 +13,12 @@ export async function main(
             return handler.postRecipes(event);
         if (httpMethod === 'GET' && resource === '/recipes')
             return handler.getRecipes();
-        if (httpMethod === 'GET' && resource === '/recipes/{id}')
-            return handler.getRecipeById(event);
         if (httpMethod === 'PUT' && resource === '/recipes/{id}')
             return handler.putRecipe(event);
         if (httpMethod === 'DELETE' && resource === '/recipes/{id}')
             return handler.deleteRecipe(event);
 
-        console.log('69. BOO!!');
+        console.log('99. BOO!!');
         return handler.toResult(404, 'bad request: no route');
     } catch {
         return handler.toResult(

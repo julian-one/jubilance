@@ -22,6 +22,7 @@ class Dynamo {
     }
 
     async putRecipe(recipe: Recipe): Promise<void> {
+        console.log('dynamo | putRecipe recipe:', recipe);
         const command = new PutCommand({
             TableName: this.tableName,
             Item: {

@@ -2,7 +2,6 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import {
     createRecipe,
     getAllRecipes,
-    getOneRecipe,
     deleteRecipe,
     updateRecipe,
 } from './service';
@@ -53,15 +52,6 @@ class Handler {
         }
     }
 
-    async getRecipeById(
-        event: APIGatewayProxyEvent,
-    ): Promise<APIGatewayProxyResult> {
-        const recipeId = event.pathParameters?.id;
-        if (!recipeId) return this.toResult(400, 'bad request: no id');
-        const recipe = await getOneRecipe(recipeId);
-        return this.toResult(200, JSON.stringify(recipe));
-    }
-
     async getRecipes(): Promise<APIGatewayProxyResult> {
         const recipes = await getAllRecipes();
         return this.toResult(200, JSON.stringify(recipes));
@@ -70,6 +60,8 @@ class Handler {
     async postRecipes(
         event: APIGatewayProxyEvent,
     ): Promise<APIGatewayProxyResult> {
+        console.log('handler | postRecipes', event);
+
         const eventBody = event.body;
         if (!eventBody) return this.toResult(400, 'bad request: no body');
 
@@ -78,6 +70,8 @@ class Handler {
             return this.toResult(400, 'bad request: not a recipe');
 
         try {
+            console.log('handler | before createRecipe', recipeRequest);
+
             const recipe = await createRecipe(recipeRequest);
             return this.toResult(201, JSON.stringify(recipe));
         } catch (error) {
