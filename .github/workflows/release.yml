@@ -16,8 +16,8 @@ jobs:
             - uses: actions/setup-node@v3
             - name: release
               run: |
-                npm ci 
-                echo "${{ secrets.ENV_FILE }}" > .env
-                npx semantic-release
+                  npm ci 
+                  echo "${{ secrets.ENV_FILE }}" > .env
+                  npx semantic-release
               env:
                   GITHUB_TOKEN: ${{ github.token }}

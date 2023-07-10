@@ -12,12 +12,15 @@ const recipe = (id?: string): Recipe => {
         id: id ?? uuid(),
         name: string(),
         description: string(),
+        ingredients: [],
         steps: [
             {
                 order: number(),
                 content: string(),
             },
         ],
+        createdAt: '',
+        updatedAt: undefined,
     };
 };
 

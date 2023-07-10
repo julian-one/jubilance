@@ -5,9 +5,11 @@ import { randomUUID } from 'crypto';
 const dynamo = new Dynamo();
 
 export const createRecipe = async (request: RecipeRequest): Promise<Recipe> => {
-    const recipe = {
+    const recipe: Recipe = {
         id: randomUUID(),
         ...request,
+        createdAt: new Date().toISOString(),
+        updatedAt: undefined,
     };
     await dynamo.putRecipe(recipe);
     return recipe;
