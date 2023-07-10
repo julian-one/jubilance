@@ -32,7 +32,7 @@ class JubilanceStack extends cdk.Stack {
             entry: path.join(__dirname, '/../src/index.ts'),
             bundling: {
                 minify: true,
-                externalModules: ['aws-sdk'],
+                externalModules: ['@aws-sdk/*'],
             },
         });
         table.grantReadWriteData(handler);
@@ -76,7 +76,6 @@ class JubilanceStack extends cdk.Stack {
 
         recipes.addMethod('POST', integration);
         recipes.addMethod('GET', integration);
-        recipesId.addMethod('GET', integration);
         recipesId.addMethod('PUT', integration);
         recipesId.addMethod('DELETE', integration);
     }
