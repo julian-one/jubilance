@@ -22,7 +22,7 @@ describe('updateRecipe', () => {
             ingredients: [],
             steps: [],
             createdAt: '',
-            updatedAt: undefined,
+            isFavorite: false,
         };
 
         const expected = random.recipe();

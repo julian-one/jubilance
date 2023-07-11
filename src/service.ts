@@ -8,8 +8,9 @@ export const createRecipe = async (request: RecipeRequest): Promise<Recipe> => {
     console.log('service | createRecipe event:', request);
     const recipe: Recipe = {
         id: randomUUID(),
-        ...request,
         createdAt: new Date().toISOString(),
+        isFavorite: request.isFavorite ? request.isFavorite : false,
+        ...request,
     };
 
     console.log('service | createRecipe recipe:', recipe);

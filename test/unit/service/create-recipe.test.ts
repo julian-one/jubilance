@@ -33,7 +33,7 @@ describe('createRecipe', () => {
             id: recipeId,
             ...recipeRequest,
             createdAt: FIXED_SYSTEM_TIME,
-            updatedAt: undefined,
+            isFavorite: false,
         };
         ddbMock.on(PutCommand).resolves({});
 

@@ -9,15 +9,32 @@ type Ingredient = {
     content: string;
 };
 
+type RecipeCategory =
+    | 'Appetizers'
+    | 'Main Dishes'
+    | 'Desserts'
+    | 'Salads'
+    | 'Soups'
+    | 'Beverages'
+    | 'Breads'
+    | 'Side Dishes'
+    | 'Breakfast'
+    | 'Snacks'
+    | 'Vegetarian';
+
 type RecipeRequest = {
     name: string;
     description?: string;
+    url?: string;
+    category?: RecipeCategory;
+    isFavorite?: boolean;
     ingredients: Ingredient[];
     steps: Step[];
 };
 
 type Recipe = RecipeRequest & {
     id: string;
+    isFavorite: boolean;
     createdAt: string;
     updatedAt?: string;
 };

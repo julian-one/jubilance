@@ -20,7 +20,7 @@ const recipe = (id?: string): Recipe => {
             },
         ],
         createdAt: '',
-        updatedAt: undefined,
+        isFavorite: false,
     };
 };
 
