@@ -19,7 +19,10 @@ describe('updateRecipe', () => {
             id: random.uuid(),
             name: random.string(),
             description: random.string(),
+            ingredients: [],
             steps: [],
+            createdAt: '',
+            isFavorite: false,
         };
 
         const expected = random.recipe();

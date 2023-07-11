@@ -5,10 +5,16 @@ import { randomUUID } from 'crypto';
 const dynamo = new Dynamo();
 
 export const createRecipe = async (request: RecipeRequest): Promise<Recipe> => {
-    const recipe = {
+    console.log('service | createRecipe event:', request);
+    const recipe: Recipe = {
         id: randomUUID(),
+        createdAt: new Date().toISOString(),
+        isFavorite: request.isFavorite ? request.isFavorite : false,
         ...request,
     };
+
+    console.log('service | createRecipe recipe:', recipe);
+
     await dynamo.putRecipe(recipe);
     return recipe;
 };
@@ -18,16 +24,13 @@ export const getAllRecipes = async (): Promise<Recipe[]> => {
     return recipes ?? [];
 };
 
-export const getOneRecipe = async (recipeId: string): Promise<Recipe> => {
-    const recipe = await dynamo.getRecipe(recipeId);
-    return recipe ?? ({} as Recipe);
-};
-
 export const updateRecipe = async (
     recipe: Recipe,
 ): Promise<Recipe | undefined> => {
     const record = await dynamo.getRecipe(recipe.id);
     if (!record) return undefined;
+
+    recipe.updatedAt = new Date().toISOString();
 
     await dynamo.putRecipe(recipe);
     return recipe;

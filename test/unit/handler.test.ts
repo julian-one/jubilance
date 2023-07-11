@@ -76,37 +76,6 @@ describe('Handler', () => {
         });
     });
 
-    describe('getRecipeById', () => {
-        let event: APIGatewayProxyEvent;
-        const handler = new Handler();
-
-        beforeEach(() => {
-            event = proxyEvent();
-        });
-
-        test('no recipe id', async () => {
-            event.pathParameters = { notAnId: random.uuid() };
-
-            const result = await handler.getRecipeById(event);
-
-            expect(result.statusCode).toEqual(400);
-            expect(result.body).toEqual('bad request: no id');
-        });
-
-        test('happy path', async () => {
-            const recipe = random.recipe();
-            event.pathParameters = { id: recipe.id };
-
-            jest.spyOn(service, 'getOneRecipe').mockResolvedValueOnce(recipe);
-
-            const result = await handler.getRecipeById(event);
-            const body = JSON.parse(result.body);
-
-            expect(result.statusCode).toEqual(200);
-            expect(body).toEqual(recipe);
-        });
-    });
-
     describe('putRecipe', () => {
         let event: APIGatewayProxyEvent;
         const handler = new Handler();
